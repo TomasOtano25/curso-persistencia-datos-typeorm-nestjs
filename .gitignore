@@ -37,3 +37,4 @@ lerna-debug.log*
 //.gitignore
 *.env
 /postgres_data
+/mysql_data
