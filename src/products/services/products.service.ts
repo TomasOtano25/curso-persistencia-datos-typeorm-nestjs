@@ -15,7 +15,7 @@ export class ProductsService {
     return this.productRepo.find();
   }
 
-  async findOne(id: number) {
+  async findOne(id: number): Promise<Product> {
     const product = await this.productRepo.findOneBy({
       id,
     });
@@ -25,35 +25,29 @@ export class ProductsService {
     return product;
   }
 
-  create(payload: CreateProductDto) {
-    // this.counterId = this.counterId + 1;
-    // const newProduct = {
-    //   id: this.counterId,
-    //   ...payload,
-    // };
-    // this.products.push(newProduct);
-    // return newProduct;
+  create(data: CreateProductDto) {
+    // const newProduct = new Product();
+
+    // newProduct.name = data.name;
+    // newProduct.description = data.description;
+    // newProduct.price = data.price;
+    // newProduct.stock = data.stock;
+    // newProduct.image = data.image;
+
+    const newProduct = this.productRepo.create(data);
+    return this.productRepo.save(newProduct);
   }
 
-  update(id: number, payload: UpdateProductDto) {
-    // const product = this.findOne(id);
-    // if (!product) {
-    //   return null;
-    // }
-    // const productIndex = this.products.findIndex((item) => item.id === id);
-    // this.products[productIndex] = {
-    //   ...product,
-    //   ...payload,
-    // };
-    // return this.products[productIndex];
+  async update(id: number, changes: UpdateProductDto) {
+    const product = await this.findOne(id);
+
+    this.productRepo.merge(product, changes);
+
+    return this.productRepo.save(product);
   }
 
-  delete(id: number) {
-    // const productIndex = this.products.findIndex((item) => item.id === id);
-    // if (productIndexs === -1) {
-    //   throw new NotFoundException(`Product #${id} not found`);
-    // }
-    // this.products.splice(productIndex, 1);
-    // return this.products;
+  async remove(id: number) {
+    await this.findOne(id);
+    return this.productRepo.delete(id);
   }
 }
