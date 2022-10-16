@@ -8,35 +8,32 @@ import {
   Put,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { CreateCategoryDto, UpdateCategorysDto } from '../dtos/categories.dto';
+
+import { CategoriesService } from '../services/categories.service';
 
 @ApiTags('categories')
 @Controller('categories')
 export class CategoriesController {
-  @Get(':id/products/:productId')
-  getCategory(@Param('id') id: string, @Param('productId') productId: string) {
-    return `product ${productId} and categories ${id}`;
+  constructor(private categoryService: CategoriesService) {}
+  @Get()
+  getCategories() {
+    return this.categoryService.findAll();
   }
 
   @Post()
-  create(@Body() payload: any) {
-    return {
-      message: 'Action create',
-      payload,
-    };
+  create(@Body() payload: CreateCategoryDto) {
+    return this.categoryService.create(payload);
   }
 
   @Put(':id')
-  update(@Param('id') id: number, @Body() payload: any) {
-    return {
-      id,
-      payload,
-    };
+  update(@Param('id') id: number, @Body() payload: UpdateCategorysDto) {
+    return this.categoryService.update(id, payload);
   }
 
   @Delete(':id')
-  delete(@Param('id') id: number) {
-    return {
-      id,
-    };
+  async delete(@Param('id') id: number) {
+    const response = await this.categoryService.remove(id);
+    return { message: response };
   }
 }
