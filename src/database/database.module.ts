@@ -25,6 +25,7 @@ const API_KEY_PROD = 'PROD_123456';
           database: dbName,
           entities: [Product, Category, Brand],
           synchronize: true,
+          // autoLoadEntities: true,
         };
       },
     }),
