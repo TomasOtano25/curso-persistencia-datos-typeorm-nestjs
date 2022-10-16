@@ -1,5 +1,6 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { Client } from 'pg';
 
 import { Order } from '../entities/order.entity';
 import { ProductsService } from '../../products/services/products.service';
@@ -9,6 +10,7 @@ export class UsersService {
   constructor(
     private productsService: ProductsService,
     private configService: ConfigService,
+    @Inject('PG') private clientPg: Client,
   ) {}
   private users = [
     {
@@ -17,7 +19,10 @@ export class UsersService {
     },
   ];
 
-  findAll() {
+  async findAll() {
+    const res = await this.clientPg.query('SELECT * FROM tasks');
+    console.log(res.rows);
+
     console.log(this.configService.get('API_KEY'));
     console.log(this.configService.get('DATABASE_NAME'));
     return this.users;
