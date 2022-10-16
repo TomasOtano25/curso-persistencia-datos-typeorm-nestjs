@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Client } from 'pg';
 
 import config from '../config';
+import { Product, Category, Brand } from '../products/entities';
 
 const API_KEY = '123456';
 const API_KEY_PROD = 'PROD_123456';
@@ -22,7 +23,7 @@ const API_KEY_PROD = 'PROD_123456';
           username: user,
           password: password,
           database: dbName,
-          entities: [],
+          entities: [Product, Category, Brand],
           synchronize: true,
         };
       },
