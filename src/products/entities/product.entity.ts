@@ -1,6 +1,7 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 import { BaseEntity } from '../../common/entities/BaseEntity';
+import { Brand } from './brand.entity';
 
 @Entity('products')
 export class Product extends BaseEntity {
@@ -21,6 +22,9 @@ export class Product extends BaseEntity {
 
   @Column({ type: 'varchar' })
   image: string;
+
+  @ManyToOne(() => Brand, (brand) => brand.products)
+  brand: Brand;
 
   // @CreateDateColumn({
   //   type: 'timestamptz',
