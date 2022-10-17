@@ -24,17 +24,23 @@ export class UsersService extends GenericService<
     super(userRepo);
   }
 
-  // override async create(data: CreateUserDto): Promise<User[] | User> {
-  //   const newUser = this.userRepo.create(data);
-  //   if (data.customerId) {
-  //     const customer = await this.customerService.findOne(data.customerId);
-  //     if (!customer) {
-  //       throw new NotFoundException(`Customer #${data.customerId} not found`);
-  //     }
-  //     newUser.customer = customer;
-  //   }
-  //   return this.userRepo.save(newUser);
-  // }
+  override async create(data: CreateUserDto): Promise<User[] | User> {
+    const newUser = this.userRepo.create(data);
+    if (data.customerId) {
+      const customer = await this.customerService.findOne(data.customerId);
+      if (!customer) {
+        throw new NotFoundException(`Customer #${data.customerId} not found`);
+      }
+      newUser.customer = customer;
+    }
+    return this.userRepo.save(newUser);
+  }
+
+  override findAll(): Promise<User[]> {
+    return this.userRepo.find({
+      relations: ['customer'],
+    });
+  }
 
   async getOrdersByUser(id: number): Promise<Order[]> {
     const user = await this.findOne(id);

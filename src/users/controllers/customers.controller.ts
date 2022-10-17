@@ -26,11 +26,8 @@ export class CustomersController {
   }
 
   @Post()
-  create(@Body() payload: CreateCustomerDto) {
-    return {
-      message: 'Action create',
-      payload,
-    };
+  create(@Body() data: CreateCustomerDto) {
+    return this.customersService.create(data);
   }
 
   @Put(':id')
