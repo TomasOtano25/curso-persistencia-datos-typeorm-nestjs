@@ -34,13 +34,13 @@ export abstract class GenericService<
   }
 
   async findOne(id: any): Promise<Entity> {
-    const product = await this.genericRepository.findOne({
+    const item = await this.genericRepository.findOne({
       where: { id },
     });
-    if (!product) {
-      throw new NotFoundException(`Product #${id} not found`);
+    if (!item) {
+      throw new NotFoundException(`Item #${id} not found`);
     }
-    return product;
+    return item;
   }
 
   findAll(): Promise<Entity[]> {
