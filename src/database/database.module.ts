@@ -5,6 +5,7 @@ import { Client } from 'pg';
 
 import config from '../config';
 import { Product, Category, Brand } from '../products/entities';
+import { User, Customer } from '../users/entities';
 
 const API_KEY = '123456';
 const API_KEY_PROD = 'PROD_123456';
@@ -23,7 +24,7 @@ const API_KEY_PROD = 'PROD_123456';
           username: user,
           password: password,
           database: dbName,
-          entities: [Product, Category, Brand],
+          entities: [Product, Category, Brand, User, Customer],
           synchronize: false,
           // autoLoadEntities: true,
           // options: {

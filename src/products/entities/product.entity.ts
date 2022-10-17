@@ -1,13 +1,9 @@
-import {
-  Column,
-  Entity,
-  PrimaryGeneratedColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+
+import { BaseEntity } from '../../common/entities/BaseEntity';
 
 @Entity('products')
-export class Product {
+export class Product extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -26,17 +22,17 @@ export class Product {
   @Column({ type: 'varchar' })
   image: string;
 
-  @CreateDateColumn({
-    type: 'timestamptz',
-    name: 'created_at',
-    default: () => 'CURRENT_TIMESTAMP',
-  })
-  createdAt: Date;
+  // @CreateDateColumn({
+  //   type: 'timestamptz',
+  //   name: 'created_at',
+  //   default: () => 'CURRENT_TIMESTAMP',
+  // })
+  // createdAt: Date;
 
-  @UpdateDateColumn({
-    type: 'timestamptz',
-    name: 'udpated_at',
-    default: () => 'CURRENT_TIMESTAMP',
-  })
-  updatedAt: Date;
+  // @UpdateDateColumn({
+  //   type: 'timestamptz',
+  //   name: 'udpated_at',
+  //   default: () => 'CURRENT_TIMESTAMP',
+  // })
+  // updatedAt: Date;
 }

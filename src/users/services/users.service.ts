@@ -1,43 +1,28 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { Client } from 'pg';
+import { Injectable } from '@nestjs/common';
 
 import { Order } from '../entities/order.entity';
-import { ProductsService } from '../../products/services/products.service';
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from '../entities';
+import { Repository } from 'typeorm';
+import { ProductsService } from 'src/products/services/products.service';
+import { GenericService } from 'src/common/generic.service';
+import { CreateUserDto, UpdateUserDto } from '../dtos/users.dto';
 
 @Injectable()
-export class UsersService {
+export class UsersService extends GenericService<
+  User,
+  CreateUserDto,
+  UpdateUserDto
+> {
   constructor(
+    @InjectRepository(User) private userRepo: Repository<User>,
     private productsService: ProductsService,
-    private configService: ConfigService,
-    @Inject('PG') private clientPg: Client,
-  ) {}
-  private users = [
-    {
-      id: 1,
-      name: 'Tomas Garcia',
-    },
-  ];
-
-  async findAll() {
-    const res = await this.clientPg.query('SELECT * FROM tasks');
-    console.log(res.rows);
-
-    console.log(this.configService.get('API_KEY'));
-    console.log(this.configService.get('DATABASE_NAME'));
-    return this.users;
-  }
-
-  findOne(id: number) {
-    const user = this.users.find((item) => item.id === id);
-    if (!user) {
-      throw new NotFoundException(`User #${id} not found`);
-    }
-    return user;
+  ) {
+    super(userRepo);
   }
 
   async getOrdersByUser(id: number): Promise<Order[]> {
-    const user = this.findOne(id);
+    const user = await this.findOne(id);
     return [
       {
         date: new Date(),
