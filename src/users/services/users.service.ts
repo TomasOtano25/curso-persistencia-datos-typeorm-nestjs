@@ -1,12 +1,14 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { Order } from '../entities/order.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../entities';
 import { Repository } from 'typeorm';
-import { ProductsService } from 'src/products/services/products.service';
-import { GenericService } from 'src/common/generic.service';
+import { ProductsService } from '../../products/services/products.service';
+import { GenericService } from '../../common/generic.service';
 import { CreateUserDto, UpdateUserDto } from '../dtos/users.dto';
+
+import { CustomersService } from '../services/customers.service';
 
 @Injectable()
 export class UsersService extends GenericService<
@@ -17,9 +19,22 @@ export class UsersService extends GenericService<
   constructor(
     @InjectRepository(User) private userRepo: Repository<User>,
     private productsService: ProductsService,
+    private customerService: CustomersService,
   ) {
     super(userRepo);
   }
+
+  // override async create(data: CreateUserDto): Promise<User[] | User> {
+  //   const newUser = this.userRepo.create(data);
+  //   if (data.customerId) {
+  //     const customer = await this.customerService.findOne(data.customerId);
+  //     if (!customer) {
+  //       throw new NotFoundException(`Customer #${data.customerId} not found`);
+  //     }
+  //     newUser.customer = customer;
+  //   }
+  //   return this.userRepo.save(newUser);
+  // }
 
   async getOrdersByUser(id: number): Promise<Order[]> {
     const user = await this.findOne(id);

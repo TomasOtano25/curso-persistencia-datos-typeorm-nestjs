@@ -16,7 +16,7 @@ export abstract class GenericService<
     this.genericRepository = genericRepository;
   }
 
-  async create(data: Dto) {
+  async create(data: Dto): Promise<Entity[] | Entity> {
     const newItem = this.genericRepository.create(data as any);
     return this.genericRepository.save(newItem);
   }

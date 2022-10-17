@@ -34,11 +34,8 @@ export class UsersController {
   }
 
   @Post()
-  create(@Body() payload: CreateUserDto) {
-    return {
-      message: 'Action create',
-      payload,
-    };
+  create(@Body() data: CreateUserDto) {
+    return this.usersService.create(data);
   }
 
   @Put(':id')
