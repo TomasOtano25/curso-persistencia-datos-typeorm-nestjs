@@ -30,7 +30,9 @@ export class ProductsController {
   @Get(':productId')
   @HttpCode(HttpStatus.ACCEPTED)
   getProduct(@Param('productId', ParseIntPipe) productId: number) {
-    return this.productsService.findOne(+productId);
+    return this.productsService.findOne(productId, {
+      relations: { brand: true, categories: true },
+    });
   }
 
   @Get()

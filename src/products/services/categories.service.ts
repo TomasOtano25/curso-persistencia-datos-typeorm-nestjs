@@ -1,9 +1,18 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { GenericService } from 'src/common/generic.service';
-import { Repository } from 'typeorm';
+import {
+  FindOptionsRelationByString,
+  FindOptionsRelations,
+  In,
+  Repository,
+} from 'typeorm';
 import { CreateCategoryDto, UpdateCategorysDto } from '../dtos/categories.dto';
 import { Category } from '../entities';
+
+interface Options {
+  relations?: FindOptionsRelationByString | FindOptionsRelations<Category>;
+}
 
 @Injectable()
 export class CategoriesService extends GenericService<
@@ -13,8 +22,23 @@ export class CategoriesService extends GenericService<
 > {
   constructor(
     @InjectRepository(Category)
-    private categoryReposigory: Repository<Category>,
+    private categoryRepository: Repository<Category>,
   ) {
-    super(categoryReposigory);
+    super(categoryRepository);
+  }
+
+  findByIds(ids: number[]) {
+    return this.categoryRepository.findBy({ id: In(ids) });
+  }
+
+  override async findOne(id: number, options?: Options): Promise<Category> {
+    const category = await this.categoryRepository.findOne({
+      relations: options?.relations,
+      where: { id },
+    });
+    if (!category) {
+      throw new NotFoundException(`Product #${id} not found`);
+    }
+    return category;
   }
 }

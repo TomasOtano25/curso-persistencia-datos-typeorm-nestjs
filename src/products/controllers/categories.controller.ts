@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Post,
   Put,
 } from '@nestjs/common';
@@ -19,6 +20,11 @@ export class CategoriesController {
   @Get()
   getCategories() {
     return this.categoryService.findAll();
+  }
+
+  @Get(':id')
+  getCategory(@Param('id', ParseIntPipe) id: number) {
+    return this.categoryService.findOne(id, { relations: { products: true } });
   }
 
   @Post()
