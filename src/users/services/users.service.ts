@@ -6,7 +6,7 @@ import { User } from '../entities';
 import { Repository } from 'typeorm';
 import { ProductsService } from '../../products/services/products.service';
 import { GenericService } from '../../common/generic.service';
-import { CreateUserDto, UpdateUserDto } from '../dtos/users.dto';
+import { CreateUserDto, UpdateUserDto } from '../dtos/user.dto';
 
 import { CustomersService } from '../services/customers.service';
 
