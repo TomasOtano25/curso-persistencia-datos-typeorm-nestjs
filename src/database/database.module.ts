@@ -2,6 +2,8 @@ import { Module, Global } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Client } from 'pg';
+import { OrderItem } from '../users/entities/order-item.entity';
+import { Order } from '../users/entities/order.entity';
 
 import config from '../config';
 import { Product, Category, Brand } from '../products/entities';
@@ -24,7 +26,15 @@ const API_KEY_PROD = 'PROD_123456';
           username: user,
           password: password,
           database: dbName,
-          entities: [Product, Category, Brand, User, Customer],
+          entities: [
+            Product,
+            Category,
+            Brand,
+            User,
+            Customer,
+            Order,
+            OrderItem,
+          ],
           synchronize: false,
           // autoLoadEntities: true,
           // options: {

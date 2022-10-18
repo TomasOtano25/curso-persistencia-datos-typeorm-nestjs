@@ -44,12 +44,13 @@ export class UsersService extends GenericService<
 
   async getOrdersByUser(id: number): Promise<Order[]> {
     const user = await this.findOne(id);
-    return [
-      {
-        date: new Date(),
-        user,
-        products: await this.productsService.findAll(),
-      },
-    ];
+    return null;
+    // return [
+    //   {
+    //     date: new Date(),
+    //     user,
+    //     products: await this.productsService.findAll(),
+    //   },
+    // ];
   }
 }
