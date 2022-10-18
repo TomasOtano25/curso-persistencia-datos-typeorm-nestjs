@@ -76,6 +76,13 @@ export class ProductsService {
       product.brand = brand;
     }
 
+    if (changes.categoriesIds) {
+      const categories = await this.categoriesService.findByIds(
+        changes.categoriesIds,
+      );
+      product.categories = categories;
+    }
+
     this.productRepo.merge(product, changes);
 
     return this.productRepo.save(product);
@@ -84,5 +91,34 @@ export class ProductsService {
   async remove(id: number) {
     await this.findOne(id);
     return this.productRepo.delete(id);
+  }
+
+  async removeCategoryToProduct(productId: number, categoryId: number) {
+    const product = await this.productRepo.findOne({
+      where: { id: productId },
+      relations: ['categories'],
+    });
+    // Eliminar category
+    product.categories = product.categories.filter(
+      (item) => item.id !== categoryId,
+    );
+
+    return this.productRepo.save(product);
+  }
+
+  async addCategoryToProduct(productId: number, categoryId: number) {
+    const product = await this.productRepo.findOne({
+      where: { id: productId },
+      relations: ['categories'],
+    });
+    const category = await this.categoriesService.findOne(categoryId);
+
+    if (!category) {
+      throw new NotFoundException(`Category ${categoryId} not found`);
+    }
+
+    product.categories = [...product.categories, category];
+
+    return this.productRepo.save(product);
   }
 }
