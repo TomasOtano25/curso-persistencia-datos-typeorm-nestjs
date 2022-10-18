@@ -1,7 +1,15 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 import { BaseEntity } from '../../common/entities/BaseEntity';
 import { Brand } from './brand.entity';
+import { Category } from './category.entity';
 
 @Entity('products')
 export class Product extends BaseEntity {
@@ -25,6 +33,10 @@ export class Product extends BaseEntity {
 
   @ManyToOne(() => Brand, (brand) => brand.products)
   brand: Brand;
+
+  @ManyToMany(() => Category, (category) => category.products)
+  @JoinTable()
+  categories: Category[];
 
   // @CreateDateColumn({
   //   type: 'timestamptz',
