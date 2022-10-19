@@ -8,6 +8,8 @@ import {
   FindOptionsRelationByString,
   FindOptionsRelations,
   Repository,
+  Between,
+  FindOptionsWhere,
 } from 'typeorm';
 
 import { Product } from '../entities';
@@ -33,9 +35,16 @@ export class ProductsService {
 
   findAll(params?: FilterProductsDto) {
     if (params) {
+      const where: FindOptionsWhere<Product> = {};
       const { limit, offset } = params;
+      const { minPrice, maxPrice } = params;
+      console.log(minPrice, maxPrice);
+      if (minPrice && maxPrice) {
+        where.price = Between(minPrice, maxPrice);
+      }
       return this.productRepo.find({
         relations: ['brand'],
+        where,
         take: limit,
         skip: offset,
       });
