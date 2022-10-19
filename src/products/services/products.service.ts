@@ -10,12 +10,16 @@ import {
   Repository,
   Between,
   FindOptionsWhere,
+  MoreThanOrEqual,
+  LessThanOrEqual,
+  FindOptionsOrder,
 } from 'typeorm';
 
 import { Product } from '../entities';
 import {
   CreateProductDto,
   FilterProductsDto,
+  OrderDirection,
   UpdateProductDto,
 } from '../dtos/product.dto';
 import { BrandsService } from './brands.service';
@@ -36,17 +40,40 @@ export class ProductsService {
   findAll(params?: FilterProductsDto) {
     if (params) {
       const where: FindOptionsWhere<Product> = {};
-      const { limit, offset } = params;
-      const { minPrice, maxPrice } = params;
-      console.log(minPrice, maxPrice);
+      let orderOptions: FindOptionsOrder<Product>;
+
+      const {
+        limit,
+        offset,
+        maxPrice,
+        minPrice,
+        brandId,
+        orderBy,
+        order = OrderDirection.DESC,
+      } = params;
+
+      console.log(order);
+
       if (minPrice && maxPrice) {
         where.price = Between(minPrice, maxPrice);
+      } else if (minPrice) {
+        where.price = MoreThanOrEqual(minPrice);
+      } else if (maxPrice) {
+        where.price = LessThanOrEqual(maxPrice);
       }
+
+      if (brandId) where.brand = { id: brandId };
+
+      if (orderBy && order) {
+        orderOptions = { [orderBy]: order };
+      }
+
       return this.productRepo.find({
         relations: ['brand'],
         where,
         take: limit,
         skip: offset,
+        order: orderOptions,
       });
     }
     return this.productRepo.find({
