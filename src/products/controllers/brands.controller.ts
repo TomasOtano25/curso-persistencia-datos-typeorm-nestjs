@@ -9,7 +9,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { CreateBrandDto } from '../dtos/brands.dto';
+import { CreateBrandDto } from '../dtos/brand.dto';
 import { BrandsService } from '../services/brands.service';
 
 @ApiTags('brands')

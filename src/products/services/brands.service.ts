@@ -6,7 +6,7 @@ import {
   FindOptionsRelations,
   Repository,
 } from 'typeorm';
-import { CreateBrandDto, UpdateBrandDto } from '../dtos/brands.dto';
+import { CreateBrandDto, UpdateBrandDto } from '../dtos/brand.dto';
 import { Brand } from '../entities';
 
 interface Options {

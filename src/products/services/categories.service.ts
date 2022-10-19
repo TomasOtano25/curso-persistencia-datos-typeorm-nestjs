@@ -7,7 +7,7 @@ import {
   In,
   Repository,
 } from 'typeorm';
-import { CreateCategoryDto, UpdateCategorysDto } from '../dtos/categories.dto';
+import { CreateCategoryDto, UpdateCategorysDto } from '../dtos/category.dto';
 import { Category } from '../entities';
 
 interface Options {

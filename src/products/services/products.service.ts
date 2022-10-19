@@ -11,7 +11,11 @@ import {
 } from 'typeorm';
 
 import { Product } from '../entities';
-import { CreateProductDto, UpdateProductDto } from '../dtos/products.dto';
+import {
+  CreateProductDto,
+  FilterProductsDto,
+  UpdateProductDto,
+} from '../dtos/product.dto';
 import { BrandsService } from './brands.service';
 import { CategoriesService } from './categories.service';
 
@@ -27,7 +31,15 @@ export class ProductsService {
     private categoriesService: CategoriesService,
   ) {}
 
-  findAll() {
+  findAll(params?: FilterProductsDto) {
+    if (params) {
+      const { limit, offset } = params;
+      return this.productRepo.find({
+        relations: ['brand'],
+        take: limit,
+        skip: offset,
+      });
+    }
     return this.productRepo.find({
       relations: ['brand'],
     });

@@ -9,7 +9,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { CreateCategoryDto, UpdateCategorysDto } from '../dtos/categories.dto';
+import { CreateCategoryDto, UpdateCategorysDto } from '../dtos/category.dto';
 
 import { CategoriesService } from '../services/categories.service';
 

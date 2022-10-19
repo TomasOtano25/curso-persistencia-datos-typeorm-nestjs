@@ -1,8 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { GenericService } from 'src/common/generic.service';
+import { GenericService } from '../../common/generic.service';
 import { Repository } from 'typeorm';
-import { CreateOrderDto, UpdateOrderDto } from '../dtos/order.dto';
+import {
+  CreateOrderDto,
+  FilterOrderDto,
+  UpdateOrderDto,
+} from '../dtos/order.dto';
 import { Customer } from '../entities';
 import { Order } from '../entities/order.entity';
 
@@ -57,5 +61,16 @@ export class OrdersService extends GenericService<
         },
       },
     });
+  }
+
+  override findAll(params?: FilterOrderDto): Promise<Order[]> {
+    if (params) {
+      const { limit, offset } = params;
+      return this.orderRepo.find({
+        take: limit,
+        skip: offset,
+      });
+    }
+    return this.orderRepo.find();
   }
 }
