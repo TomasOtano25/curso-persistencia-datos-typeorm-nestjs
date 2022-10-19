@@ -46,4 +46,16 @@ export class OrdersService extends GenericService<
 
     return this.orderRepo.save(order);
   }
+
+  async findOne(id: any): Promise<Order> {
+    return this.orderRepo.findOne({
+      where: { id },
+      relations: {
+        items: {
+          product: true,
+          order: true,
+        },
+      },
+    });
+  }
 }
