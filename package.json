@@ -23,7 +23,8 @@
     "migrations:generate": "npm run typeorm migration:generate -- -d src/database/dataSource.ts",
     "migrations:run": "npm run typeorm migration:run -- -d src/database/dataSource.ts",
     "migrations:show": "npm run typeorm migration:show -- -d src/database/dataSource.ts",
-    "migrations:revert": "npm run typeorm migration:revert -- -d src/database/dataSource.ts"
+    "migrations:revert": "npm run typeorm migration:revert -- -d src/database/dataSource.ts",
+    "migrations:drop": "npm run typeorm schema:drop -- -d src/database/dataSource.ts"
   },
   "dependencies": {
     "@nestjs/axios": "^0.1.0",
