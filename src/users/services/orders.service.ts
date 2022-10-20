@@ -57,7 +57,6 @@ export class OrdersService extends GenericService<
       relations: {
         items: {
           product: true,
-          order: true,
         },
       },
     });

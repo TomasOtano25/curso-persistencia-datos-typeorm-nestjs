@@ -8,12 +8,14 @@ import {
   Post,
   Put,
   Query,
+  SerializeOptions,
 } from '@nestjs/common';
 import {
   CreateOrderDto,
   FilterOrderDto,
   UpdateOrderDto,
 } from '../dtos/order.dto';
+import { GROUP_ORDER } from '../entities/order.entity';
 import { OrdersService } from '../services/orders.service';
 
 @Controller('orders')
@@ -26,6 +28,9 @@ export class OrdersController {
   }
 
   @Get(':id')
+  @SerializeOptions({
+    groups: [GROUP_ORDER],
+  })
   get(@Param('id', ParseIntPipe) id: number) {
     return this.ordersService.findOne(id);
   }

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateOrderItemDto, UpdateOrderItemDto } from '../dtos/order-item.dto';
@@ -57,5 +57,16 @@ export class OrderItemsService {
     this.itemsRepo.merge(orderItem, changes);
 
     return this.itemsRepo.create(orderItem);
+  }
+
+  async remove(id: number) {
+    const orderItem = await this.itemsRepo.findOne({
+      where: { id },
+    });
+    console.log(orderItem);
+    if (!orderItem) {
+      throw new NotFoundException(`Item ${id} not found`);
+    }
+    return this.itemsRepo.delete(id);
   }
 }

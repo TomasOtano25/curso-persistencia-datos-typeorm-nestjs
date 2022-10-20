@@ -1,6 +1,9 @@
 import { CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
+import { Exclude } from 'class-transformer';
+
 export abstract class BaseEntity {
+  @Exclude()
   @CreateDateColumn({
     type: 'timestamptz',
     name: 'created_at',
@@ -8,6 +11,7 @@ export abstract class BaseEntity {
   })
   createdAt: Date;
 
+  @Exclude()
   @UpdateDateColumn({
     type: 'timestamptz',
     name: 'udpated_at',
